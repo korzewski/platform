@@ -1,0 +1,23 @@
+body{
+background: #bbb;
+}
+#screen{
+width: 500px;
+height: 250px;
+border: 1px dashed #666;
+overflow: hidden;
+margin: auto;
+margin-top: 10%;
+position: relative;
+}
+#game{
+background: url(../images/bg.jpg);
+position: absolute;
+top: 0;
+left: 0;
+}
+#gameDebug{
+position: absolute;
+top: 0;
+left: 0;
+}
