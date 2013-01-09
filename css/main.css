@@ -2,16 +2,14 @@ body{
 background: #bbb;
 }
 #screen{
-width: 500px;
-height: 250px;
 border: 1px dashed #666;
 overflow: hidden;
 margin: auto;
-margin-top: 10%;
+margin-top: 60px;
 position: relative;
 }
 #game{
-background: url(../images/bg.jpg);
+background: #555 url(../images/square.png);
 position: absolute;
 top: 0;
 left: 0;

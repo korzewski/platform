@@ -1,27 +1,38 @@
 /* --- have to be set up dynamically --- */
-var screenWidth = 500;
-var screenHeight = 250;
-var gameWidth = 1000;
-var gameHeight = 500;
+var screenWidth = 1000;
+var screenHeight = 500;
+var mapWidth, mapHeight;
 
 var stage;
 var player;
 var world;
 
+var MAP;
+
 function init(){
-/* --- box2d --- */
+	loadMap();
+
+	$('#screen')
+	.css({
+		width: screenWidth,
+		height: screenHeight
+	})
+	.append('<canvas id="game" width="'+ mapWidth +'" height="'+ mapHeight +'"></canvas>')
+	.append('<canvas id="gameDebug" width="'+ mapWidth +'" height="'+ mapHeight +'"></canvas>');
+
+	/* --- box2d --- */
 	world = new b2World(new b2Vec2(0, 10), true);
 	initializeDebug();
 	
-/* --- easeljs --- */
+	/* --- easeljs --- */
 	stage = new createjs.Stage(document.getElementById('game'));
-	
-	loadMap();
 	
 	player = new Player({x: 200, y: 50, img: IMAGE_CAT});
 			
 	createjs.Ticker.addListener(window);
 	createjs.Ticker.setFPS(30);
+	
+	drawMap(MAP);
 }
 
 function tick(){
@@ -31,14 +42,15 @@ function tick(){
 	player.setPosition();
 	stage.update();
 }
-var MAP;
+
 function loadMap(){
-	var load;
-	load = localStorage.getItem('map');
+	var load = localStorage.getItem('map');
 	//alert(load);
 	
 	MAP = JSON.parse(load);
-	drawMap(MAP);
+	mapWidth = MAP[0][0].mapWidth;
+	mapHeight = MAP[0][0].mapHeight;
+	
 }
 
 function drawMap(newMap){
@@ -48,7 +60,6 @@ function drawMap(newMap){
 		
 		createEdgeShape(newMap[i], offsetX, offsetY);
 	}
-    
 }
 
 function createEdgeShape(vertexArray, posX, posY, type) {
