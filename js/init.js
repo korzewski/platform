@@ -10,8 +10,14 @@ var world;
 var MAP;
 
 function init(){
-	loadMap();
+	var mapName = 'map001';	
+	loadMap(mapName);
+}
 
+function setupGame(){
+	mapWidth = MAP[0][0].mapWidth;
+	mapHeight = MAP[0][0].mapHeight;
+	
 	$('#screen')
 	.css({
 		width: screenWidth,
@@ -19,7 +25,7 @@ function init(){
 	})
 	.append('<canvas id="game" width="'+ mapWidth +'" height="'+ mapHeight +'"></canvas>')
 	.append('<canvas id="gameDebug" width="'+ mapWidth +'" height="'+ mapHeight +'"></canvas>');
-
+	
 	/* --- box2d --- */
 	world = new b2World(new b2Vec2(0, 10), true);
 	initializeDebug();
@@ -31,8 +37,6 @@ function init(){
 			
 	createjs.Ticker.addListener(window);
 	createjs.Ticker.setFPS(30);
-	
-	drawMap(MAP);
 }
 
 function tick(){
@@ -42,15 +46,25 @@ function tick(){
 	player.setPosition();
 	stage.update();
 }
+function loadMap(mapName){
+	
+	$.ajax({
+		url: 'php/load_map.php',
+		type: 'post',
+		data: {map_name: mapName},
+		success: function(data){
+			MAP = JSON.parse(data);
+			
+			setupGame();
+			drawMap(MAP);
+			
+			console.log('map "'+ mapName +'.map" is loaded');
+		},
+		error: function(){
+			alert('error - map is not working'); // have to be checked in php
+		}
+	});
 
-function loadMap(){
-	var load = localStorage.getItem('map');
-	//alert(load);
-	
-	MAP = JSON.parse(load);
-	mapWidth = MAP[0][0].mapWidth;
-	mapHeight = MAP[0][0].mapHeight;
-	
 }
 
 function drawMap(newMap){
