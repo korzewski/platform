@@ -9,8 +9,9 @@ function focusCamera(object){
 		offsetY = (screenHeight/2) - el.y * SCALE;
 	}
 	
-	$('#game, #gameDebug').css({
-		left: offsetX,
-		top: offsetY
-	});
+	//console.log('offsetX: ' + offsetX + ' offsetY: ' + offsetY);
+	if(offsetX != undefined) stage.x = offsetX;
+	else stage.x = 0;
+	if(offsetY != undefined) stage.y = offsetY;
+	else stage.y = 0;
 }

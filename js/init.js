@@ -23,12 +23,11 @@ function setupGame(){
 		width: screenWidth,
 		height: screenHeight
 	})
-	.append('<canvas id="game" width="'+ mapWidth +'" height="'+ mapHeight +'"></canvas>')
-	.append('<canvas id="gameDebug" width="'+ mapWidth +'" height="'+ mapHeight +'"></canvas>');
+	.append('<canvas id="game" width="'+ screenWidth +'" height="'+ screenHeight +'"></canvas>');
 	
 	/* --- box2d --- */
 	world = new b2World(new b2Vec2(0, 10), true);
-	initializeDebug();
+	//initializeDebug();
 	
 	/* --- easeljs --- */
 	stage = new createjs.Stage(document.getElementById('game'));
@@ -41,11 +40,12 @@ function setupGame(){
 
 function tick(){
 	world.Step(1/30, 10, 10);
-	world.DrawDebugData();
+	//world.DrawDebugData();
 	
 	player.setPosition();
 	stage.update();
 }
+
 function loadMap(mapName){
 	
 	$.ajax({
@@ -74,6 +74,7 @@ function drawMap(newMap){
 		
 		createEdgeShape(newMap[i], offsetX, offsetY);
 	}
+	drawShape(newMap);
 }
 
 function createEdgeShape(vertexArray, posX, posY, type) {
